@@ -1,1 +1,1 @@
-gradle bootRun -DskipTests=true
+# gradle bootRun -DskipTests=true
