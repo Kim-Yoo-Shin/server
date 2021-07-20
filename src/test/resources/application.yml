@@ -1,0 +1,20 @@
+devtools:
+  livereload:
+    enabled: true
+
+spring:
+  output.ansi.enabled: always
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #url: jdbc:mysql://mysql:3308 # /sa?autoReconnect=true   # for docker
+    url: jdbc:mysql://localhost:3308/sa?useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    # url: jdbc:mysql://mysql:3308/sa?autoReconnect=true  # for local test
+    username: root1
+    password: sa
+
+  jpa:
+    show-sql: true
+    hibernate.ddl-auto: create
+
+
+logging.level.com.example: info
