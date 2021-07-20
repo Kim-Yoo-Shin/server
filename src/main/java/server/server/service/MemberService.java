@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 @Transactional(readOnly = true) // 읽기 전용 메서드 성능 최적화
 @RequiredArgsConstructor
-public class MeberService {
+public class MemberService {
 
     private final MemberRepository memberRepository;
 
@@ -29,7 +29,7 @@ public class MeberService {
     }
 
     private void validateDuplicateMember(Member member) {
-        Optional<Member> findMembers = memberRepository.findById(member.getId());
+        List<Member> findMembers = memberRepository.findByName(member.getName());
         if(!findMembers.isEmpty()){
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
@@ -39,9 +39,9 @@ public class MeberService {
     public List<Member> findAll(){
         return memberRepository.findAll();
     }
+
     // 특정 회원 조회
-    // 차후 getById를 통한 테이블 오류가 없다면 변경하기
-    public Optional<Member> findOne(Long memberId){
-        return memberRepository.findById(memberId);
+    public Member findOne(Long memberId){
+        return memberRepository.findOne(memberId);
     }
 }
