@@ -1,4 +1,4 @@
-package domain;
+package server.server.domain;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,5 @@
-package domain;
+package server.server.domain;
 
-
-import domain.board.Board;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,17 +14,23 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Member {
+public class Board {
 
     @Id
-    @Column("member_id")
-    private String id;
-
-    private String name;
+    @Column("board_id")
+    @GeneratedValue
+    private Long id;
 
     private String password;
 
+    private String title;
+
+    private String content;
+
+    private BoardCategory bgroup;
+
+    private List<Comment> comments = new ArrayList<>();
+
     private LocalDateTime dateTime;
 
-    private List<Board> boards = new ArrayList<>();
 }
