@@ -12,14 +12,12 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+
 public class Comment {
 
     @Id
-    @Column("comment_id")
+    @Column(name = "comment_id")
     private Long id;
-
-    @GeneratedValue
-    private int order;
 
     private int class_comment;
 

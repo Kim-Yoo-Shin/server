@@ -2,6 +2,8 @@ package server.server.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,10 +16,13 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+// for Null 필드 제외
+@DynamicInsert
+@DynamicUpdate
 public class Board {
 
     @Id
-    @Column("board_id")
+    @Column(name = "board_id")
     @GeneratedValue
     private Long id;
 

@@ -1,30 +1,37 @@
 package server.server.domain;
 
-
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+
+import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import java.util.Date;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Table(name = "member")
+@Getter @Setter
+
+// for Null 필드 제외
+@DynamicInsert
+@DynamicUpdate
 public class Member {
 
     @Id
-    @Column("member_id")
-    private String id;
+    @GeneratedValue
+    @Column(name = "member_id")
+    private Long id;
 
     private String name;
 
     private String password;
 
-    private LocalDateTime dateTime;
+    @Column(name = "create_data")
+    private Date createDate;
 
-    private List<Board> boards = new ArrayList<>();
+    private List<Board> boardList;
 }

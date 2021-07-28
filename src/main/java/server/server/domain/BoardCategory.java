@@ -13,7 +13,7 @@ import javax.persistence.Id;
 public class BoardCategory {
 
     @Id
-    @Column("boardcategory_id")
+    @Column(name = "boardcategory_id")
     private String name;
 
 }
