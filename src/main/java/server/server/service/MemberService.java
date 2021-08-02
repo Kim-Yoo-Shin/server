@@ -3,8 +3,10 @@ package server.server.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import server.server.domain.Member;
 import server.server.repository.MemberRepository;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class MemberService {
     public Long join(Member member){
         validateDuplicateMember(member);
 
-        member.setCreateDate(new Date());
+        member.setDatetime(LocalDateTime.now());
 
         memberRepository.save(member);
         return member.getId();

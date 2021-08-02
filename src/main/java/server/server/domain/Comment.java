@@ -25,7 +25,7 @@ public class Comment {
     private String content;
 
     @ManyToOne
-    @JoinColumn("board_id")
+    @JoinColumn(name = "board_id")
     private Board board;
 
     private LocalDateTime datetime;

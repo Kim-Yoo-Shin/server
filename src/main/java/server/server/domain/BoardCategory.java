@@ -11,7 +11,6 @@ import javax.persistence.Id;
 @Getter
 @Setter
 public class BoardCategory {
-
     @Id
     @Column(name = "boardcategory_id")
     private String name;
