@@ -3,12 +3,10 @@ package server.server.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import server.server.domain.Member;
 import server.server.repository.MemberRepository;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true) // 읽기 전용 메서드 성능 최적화

@@ -1,7 +1,6 @@
 package server.server.repository;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import server.server.domain.Member;
 
@@ -11,6 +10,7 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class MemberRepository  {
+
     private final EntityManager em;
 
     public void save(Member member){

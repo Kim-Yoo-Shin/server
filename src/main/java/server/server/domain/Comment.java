@@ -24,8 +24,6 @@ public class Comment {
 
     private String content;
 
-
-
     private LocalDateTime datetime;
 
 
