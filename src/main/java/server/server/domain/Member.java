@@ -7,10 +7,18 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 
+<<<<<<< Updated upstream
 import javax.persistence.*;
 import javax.persistence.GeneratedValue;
 import java.util.Date;
 import java.util.List;
+=======
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.time.LocalDateTime;
+
+>>>>>>> Stashed changes
 
 @Entity
 @Table(name = "member")
@@ -33,5 +41,9 @@ public class Member {
     @Column(name = "create_data")
     private Date createDate;
 
+<<<<<<< Updated upstream
     private List<Board> boardList;
+=======
+
+>>>>>>> Stashed changes
 }

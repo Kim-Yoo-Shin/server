@@ -3,10 +3,7 @@ package server.server.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,11 +18,15 @@ public class Comment {
 
     private int class_comment;
 
+    @ManyToOne
+    @JoinColumn(name = "member_id")
     private Member member;
 
     private String content;
 
-    private LocalDateTime date;
+
+
+    private LocalDateTime datetime;
 
 
 
