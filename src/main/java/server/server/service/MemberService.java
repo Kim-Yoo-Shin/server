@@ -17,6 +17,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
+
     // 회원 가입
     @Transactional
     public Long join(Member member){
@@ -32,7 +33,6 @@ public class MemberService {
         List<Member> findMembers = memberRepository.findByName(member.getName());
         if(!findMembers.isEmpty()){
             throw new IllegalStateException("이미 존재하는 회원입니다.");
-
         }
     }
 
@@ -45,4 +45,6 @@ public class MemberService {
     public Member findOne(Long memberId){
         return memberRepository.findOne(memberId);
     }
+
+    // 작성 글 조회회
 }

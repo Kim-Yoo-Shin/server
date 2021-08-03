@@ -30,12 +30,4 @@ public class Member {
 
     @Column(name = "create_data")
     private LocalDateTime datetime;
-
-
-
-
-
-
-
-
 }

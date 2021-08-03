@@ -29,4 +29,24 @@ public class MemberServiceTest_01 {
         //then
         Assertions.assertEquals(member, memberRepository.findOne(saveId));
     }
+
+    @Test
+    public void 중복회원예외() throws Exception{
+        //given
+        Member member = new Member();
+        member.setName("lee");
+        Member member1 = new Member();
+        member1.setName("lee");
+
+        //when
+        memberService.join(member);
+        try{
+            memberService.join(member1);
+        }catch (IllegalStateException e){
+            return;
+        }
+        //then
+        Assertions.fail("예외가 발생해야한다.");
+
+    }
 }
