@@ -30,11 +30,13 @@ public class Board {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-
     private LocalDateTime dateTime;
+
+
+    private int likeCount;
 
 }
