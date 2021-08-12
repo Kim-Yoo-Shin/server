@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import server.server.domain.Board;
 import server.server.domain.Category;
+import server.server.domain.Member;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -32,9 +33,22 @@ public class BoardRepository {
                 .getResultList();
     }
 
+    public List<Board> findMemberBoard(Member member) {
+        return em.createQuery("select b from Board b where b.member = :member  ", Board.class)
+                .getResultList();
+    }
+
     public void plusLikeCount(Long id) {
         Board board = em.find(Board.class, id);
         board.setLikeCount(board.getLikeCount() + 1);
     }
+
+    public List<Board> findOrderLike() {
+       return em.createQuery("select b from Board b order by b.likeCount asc ",Board.class)
+                .setFirstResult(0)
+                .setMaxResults(20)
+                .getResultList();
+    }
+
 
 }

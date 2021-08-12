@@ -20,23 +20,15 @@ public class Board {
     @Column(name = "board_id")
     @GeneratedValue
     private Long id;
-
     private String password;
-
     private String title;
-
     private String content;
-
     @Enumerated(EnumType.STRING)
     private Category category;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
     private LocalDateTime dateTime;
-
-
     private int likeCount;
 
 }
