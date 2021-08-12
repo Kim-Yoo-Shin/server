@@ -28,7 +28,7 @@ public class Comment {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    private LocalDateTime datetime;
+    private LocalDateTime dateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id")
@@ -36,5 +36,6 @@ public class Comment {
 
     @OneToMany(mappedBy = "parent")
     private List<Comment> child;
+
 
 }
