@@ -42,4 +42,5 @@ public class BoardService {
         boardRepository.plusLikeCount(id);
 
     }
+
 }

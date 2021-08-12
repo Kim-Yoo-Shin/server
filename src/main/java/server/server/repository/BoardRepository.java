@@ -43,4 +43,12 @@ public class BoardRepository {
         board.setLikeCount(board.getLikeCount() + 1);
     }
 
+    public List<Board> findOrderLike() {
+       return em.createQuery("select b from Board b order by b.likeCount asc ",Board.class)
+                .setFirstResult(0)
+                .setMaxResults(20)
+                .getResultList();
+    }
+
+
 }
