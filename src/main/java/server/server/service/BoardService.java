@@ -9,6 +9,7 @@ import server.server.domain.Board;
 import server.server.domain.Category;
 import server.server.repository.BoardRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -21,6 +22,7 @@ public class BoardService {
 
 
     public void save(Board board) {
+        board.setDateTime(LocalDateTime.now());
         boardRepository.save(board);
     }
 

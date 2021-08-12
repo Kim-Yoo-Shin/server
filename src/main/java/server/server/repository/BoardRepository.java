@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import server.server.domain.Board;
 import server.server.domain.Category;
+import server.server.domain.Member;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -29,6 +30,11 @@ public class BoardRepository {
 
     public List<Board> findCategoryAll(Category category) {
         return em.createQuery("select b from Board b where b.category = :category", Board.class)
+                .getResultList();
+    }
+
+    public List<Board> findMemberBoard(Member member) {
+        return em.createQuery("select b from Board b where b.member = :member  ", Board.class)
                 .getResultList();
     }
 
