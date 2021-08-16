@@ -8,6 +8,7 @@ import server.server.service.MemberService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 @Slf4j
@@ -22,8 +23,11 @@ public class MemberController {
     }
 
     @PostMapping("/member")
-    public String create(@RequestBody Member member){
-        return memberService.join(member).toString();
+    public Long create(@RequestBody MemberForm memberForm){
+        Member member = new Member();
+        member.setName(memberForm.getName());
+        member.setPassword(memberForm.getPassward());
+        return memberService.join(member);
     }
 
 }
