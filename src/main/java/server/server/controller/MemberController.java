@@ -16,12 +16,9 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
-    @GetMapping("/member")
-    public List<Member> memberList() {
-        System.out.println(memberService.findAll().toString());
-        return memberService.findAll();
-    }
-
+    /**
+    * 회원가입
+    **/
     @PostMapping("/member")
     public Long create(@RequestBody MemberForm memberForm){
         Member member = new Member();
@@ -29,5 +26,4 @@ public class MemberController {
         member.setPassword(memberForm.getPassward());
         return memberService.join(member);
     }
-
 }
