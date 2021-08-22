@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.server.domain.Board;
 import server.server.domain.Category;
+import server.server.dto.BoardDto;
 import server.server.repository.BoardRepository;
 
 import java.time.LocalDateTime;
@@ -26,8 +27,10 @@ public class BoardService {
         boardRepository.save(board);
     }
 
-    public Board findOne(Long id) {
-        return boardRepository.findOne(id);
+    public BoardDto findOne(Long id) {
+        return BoardDto.from(boardRepository.findOne(id));
+
+
     }
 
     public List<Board> findAll() {
