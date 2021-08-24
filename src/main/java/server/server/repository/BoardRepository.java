@@ -9,9 +9,11 @@ import server.server.domain.Comment;
 import server.server.domain.Member;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Transactional
 @Repository
 @RequiredArgsConstructor
 public class BoardRepository {

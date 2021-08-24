@@ -9,21 +9,58 @@ import server.server.domain.Board;
 import server.server.dto.BoardDto;
 import server.server.service.BoardService;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 @Slf4j
 @RestController
 @RequestMapping("/boards")
 @RequiredArgsConstructor
 public class BoardController {
 
-    private BoardService boardService;
+    private final BoardService boardService;
 
-    @ResponseStatus(HttpStatus.OK)
+
+    /**
+     * board id로 조회하기!!
+     * @param id
+     * @return
+     */
     @GetMapping("/{boardId}")
     public BoardDto findPathBoard(@PathVariable("boardId") Long id) {
-
-       return boardService.findOne(id);
+        Board board = boardService.findOne(id);
+        return BoardDto.from(board);
     }
 
-    
+
+    /**
+     * 전체 보드 조회 하기!!
+     * 나눠서 주느
+     * @return
+     */
+    @GetMapping("/best")
+    public List<BoardDto> findAllBestBoard() {
+        List<Board> boards = boardService.findAll();
+        List<BoardDto> boardDtos = new ArrayList<>();
+        for (Board board : boards) {
+            boardDtos.add(BoardDto.from(board));
+        }
+        return boardDtos;
+    }
+
+    /**
+     * board 저장하기!
+     * member하고 등록하는 법 공부 후 처리하기.
+     * @param board
+     */
+    @PostMapping("/write")
+    public void saveBoard(@RequestBody Board board) {
+
+        boardService.save(board);
+    }
+
+
+
 
 }

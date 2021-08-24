@@ -17,6 +17,7 @@ public class MemberController {
 
     @GetMapping("/member")
     public List<Member> memberList() {
+        log.info("{}" ,memberService.findAll().toString());
         System.out.println(memberService.findAll().toString());
         return memberService.findAll();
     }

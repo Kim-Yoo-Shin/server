@@ -7,9 +7,9 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-    url: jdbc:mysql://localhost:3306/sa?autoReconnect=true  # for local test
+    url: jdbc:mysql://localhost:3306/sa?autoReconnect=true&characterEncoding=utf8&serverTimezone=UTC
     username: root
-    password: sa
+    password: s4dlagusdbf!
 
     # for Docker
     # url: jdbc:mysql://mysql:3306/sa?serverTimezone=UTC&characterEncoding=UTF-8 
@@ -19,6 +19,10 @@ spring:
   jpa:
     show-sql: true
     hibernate.ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
 
 
 logging.level.com.example: info
+

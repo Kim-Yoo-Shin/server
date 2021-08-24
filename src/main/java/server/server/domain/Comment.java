@@ -30,12 +30,12 @@ public class Comment {
 
     private LocalDateTime dateTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comment_id")
-    private Comment parent;
-
-    @OneToMany(mappedBy = "parent")
-    private List<Comment> child;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "comment_id")
+//    private Comment parent;
+//
+//    @OneToMany(mappedBy = "parent")
+//    private List<Comment> child;
 
 
 }
