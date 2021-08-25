@@ -9,6 +9,7 @@ import server.server.domain.Comment;
 import server.server.domain.Member;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -57,12 +58,26 @@ public class BoardRepository {
         board.setLikeCount(board.getLikeCount() + 1);
     }
 
-    //plus 최근 날짜 10일 전까지 추천 게시글
-    public List<Board> findOrderLike() {
+    /**
+     * //plus 최근 날짜 10일 전까지 추천 게시글
+     * @return
+     */
+    /*public List<Board> findOrderLike() {
        return em.createQuery("select b from Board b order by b.likeCount desc ,b.dateTime desc ",Board.class)
                 .setFirstResult(0)
                 .setMaxResults(20)
                 .getResultList();
+    }*/
+
+    /**
+     * board 페이지 가져오기
+     */
+
+    public Integer findBoardPage(Category category) {
+        return em.createQuery("select count(b) from Board b where b.category = :category", Integer.class)
+                .setParameter("category", category)
+                .getSingleResult();
+
     }
 
 
