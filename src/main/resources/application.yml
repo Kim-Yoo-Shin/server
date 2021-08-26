@@ -7,14 +7,14 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-    url: jdbc:mysql://localhost:3306/sa?autoReconnect=true  # for local test
-    username: root
-    password: sa
+#    url: jdbc:mysql://localhost:3306/sa?autoReconnect=true  # for local test
+#    username: root
+#    password: 1234
 
-    # for Docker
-    # url: jdbc:mysql://mysql:3306/sa?serverTimezone=UTC&characterEncoding=UTF-8 
-    # username: root
-    # password: sa
+#     for Docker
+    url: jdbc:mysql://mysql:3306/sa?serverTimezone=UTC&characterEncoding=UTF-8
+    username: sql
+    password: 1234
 
   jpa:
     show-sql: true
