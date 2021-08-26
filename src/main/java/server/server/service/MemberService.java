@@ -9,6 +9,7 @@ import server.server.repository.MemberRepository;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true) // 읽기 전용 메서드 성능 최적화
@@ -17,34 +18,27 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-
-    // 회원 가입
+    /**
+     * 회원가입
+     **/
     @Transactional
-    public Long join(Member member){
-        validateDuplicateMember(member);
-
-        member.setDatetime(LocalDateTime.now());
-
-        memberRepository.save(member);
-        return member.getId();
-    }
-
-    private void validateDuplicateMember(Member member) {
-        List<Member> findMembers = memberRepository.findByName(member.getName());
-        if(!findMembers.isEmpty()){
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
+    public String join(Member member){
+        if(memberRepository.existsByUserId(member.getUserId())){
+            return "Can not join cause by duplicate userId.";
         }
+        member.setDatetime(LocalDateTime.now());
+        memberRepository.save(member);
+        return member.getUserId().toString();
     }
 
-    // 회원 전체 조회
+    /**
+     * 전체 회원 조회
+     **/
     public List<Member> findAll(){
         return memberRepository.findAll();
     }
 
-    // 특정 회원 조회
-    public Member findOne(Long memberId){
-        return memberRepository.findOne(memberId);
-    }
 
-    // 작성 글 조회회
+
+
 }
