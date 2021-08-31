@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
-//@Transactional
+@Transactional
 public class BoardService {
 
     @Autowired
@@ -24,7 +24,7 @@ public class BoardService {
 
 
     public void save(Board board) {
-        board.setDateTime(LocalDateTime.now());
+
         boardRepository.save(board);
 
 
@@ -45,6 +45,18 @@ public class BoardService {
     public void plusLikeCount(Long id) {
         boardRepository.plusLikeCount(id);
 
+    }
+
+    public Board update( Board changeBoard) {
+       return boardRepository.update(changeBoard);
+    }
+
+    public Long findPage(Category category) {
+        return boardRepository.categoryfindPage(category);
+    }
+
+    public Long findMainPage() {
+        return boardRepository.findPage();
     }
 
 }

@@ -1,11 +1,15 @@
 package server.server.dto;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import server.server.domain.Board;
 import server.server.domain.Category;
 import server.server.domain.Member;
 
 import java.time.LocalDateTime;
 
+
+//content
 public class BoardDto {
     public final Long id;
 

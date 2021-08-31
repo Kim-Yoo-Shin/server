@@ -34,7 +34,6 @@ public class CommentRepository {
     }
 
 
-
     //멤버의 댓글 확
     public List<Comment> findMemberComment(Member member) {
         return em.createQuery("select c from Comment c where c.member = :member", Comment.class)

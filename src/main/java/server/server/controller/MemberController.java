@@ -22,10 +22,6 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
-
-    /**
-    * 회원가입
-    **/
     @PostMapping("/member")
     public ResponseEntity<?> create(@RequestBody MemberForm memberForm){
         Member member = new Member(memberForm.getUserId(),memberForm.getName(),memberForm.getPassward());
