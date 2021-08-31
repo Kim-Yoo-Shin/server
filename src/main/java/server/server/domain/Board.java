@@ -1,5 +1,6 @@
 package server.server.domain;
 
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
@@ -20,6 +21,7 @@ public class Board {
     @Column(name = "board_id")
     @GeneratedValue
     private Long id;
+
     private String password;
     private String title;
     private String content;
@@ -32,6 +34,7 @@ public class Board {
     private Member member;
 
     private LocalDateTime dateTime;
+
     private int likeCount;
 
 }

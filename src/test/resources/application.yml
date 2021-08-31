@@ -6,9 +6,9 @@ spring:
   output.ansi.enabled: always
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/sa?serverTimezone=UTC&characterEncoding=UTF-8  # for local test
+    url: jdbc:mysql://localhost:3306/sa?autoReconnect=true&characterEncoding=utf8&serverTimezone=UTC
     username: root
-    password: 1234
+    password: s4dlagusdbf!
 
   jpa:
     show-sql: true

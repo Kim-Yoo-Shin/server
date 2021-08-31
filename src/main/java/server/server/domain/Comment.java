@@ -28,14 +28,21 @@ public class Comment {
     //@JoinColumn(name = "board_id")
     private Board board;
 
-    private LocalDateTime datetime;
+    private LocalDateTime dateTime;
 
+<<<<<<< HEAD
     //@ManyToOne(fetch = FetchType.LAZY)
     //@JoinColumn(name = "comment_id")
     private Comment parent;
+=======
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "comment_id")
+//    private Comment parent;
+//
+//    @OneToMany(mappedBy = "parent")
+//    private List<Comment> child;
+>>>>>>> add-boardrepo
 
-    @OneToMany(mappedBy = "parent")
-    private List<Comment> child;
 
 }
 */
