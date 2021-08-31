@@ -1,4 +1,4 @@
-/*package server.server.domain;
+package server.server.domain;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,31 +18,21 @@ public class Comment {
 
     private int class_comment;
 
-    //@ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "member_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
     private String content;
 
-    //@ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "board_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")
     private Board board;
 
     private LocalDateTime dateTime;
 
-<<<<<<< HEAD
-    //@ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "comment_id")
-    private Comment parent;
-=======
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "comment_id")
-//    private Comment parent;
-//
-//    @OneToMany(mappedBy = "parent")
-//    private List<Comment> child;
->>>>>>> add-boardrepo
+   /* @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comment_id")
+    private Comment parent;*/
 
 
 }
-*/

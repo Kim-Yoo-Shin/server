@@ -1,4 +1,3 @@
-/*
 package server.server.repository;
 
 import lombok.RequiredArgsConstructor;
@@ -27,11 +26,6 @@ public class CommentRepository {
         return em.find(Comment.class, id);
     }
 
-<<<<<<< HEAD
-//    public List<Comment> findMemberComment(Long id) {
-//        return em.createQuery("select c from Comment c where c.");
-//    }
-=======
 
     public List<Comment> findBoardComment(Board board) {
         return em.createQuery("select c from Comment c where c.board = :board", Comment.class)
@@ -40,13 +34,13 @@ public class CommentRepository {
     }
 
 
+
     //멤버의 댓글 확
     public List<Comment> findMemberComment(Member member) {
         return em.createQuery("select c from Comment c where c.member = :member", Comment.class)
                 .setParameter("member", member)
                 .getResultList();
     }
->>>>>>> add-boardrepo
 
     //날짜로 댓글 확
     public List<Comment> findPeriodComment(LocalDateTime startDate, LocalDateTime finalDate) {
@@ -60,4 +54,3 @@ public class CommentRepository {
 
 
 }
-*/
