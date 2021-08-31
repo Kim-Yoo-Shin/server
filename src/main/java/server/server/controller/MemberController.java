@@ -22,7 +22,7 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
-<<<<<<< HEAD
+
     /**
     * 회원가입
     **/
@@ -35,13 +35,6 @@ public class MemberController {
                     HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok(member);
-=======
-    @GetMapping("/member")
-    public List<Member> memberList() {
-        log.info("{}" ,memberService.findAll().toString());
-        System.out.println(memberService.findAll().toString());
-        return memberService.findAll();
->>>>>>> add-boardrepo
     }
 
     /**
