@@ -13,8 +13,12 @@ public class BoardTitlePage {
     private final int perBoard = 20;
     private List<BoardTitleDto> boardTitleDtos = new ArrayList<>();
 
-
     public BoardTitlePage(int nowPage, int totalPage) {
+        this.nowPage = nowPage;
+        this.totalPage = totalPage;
+    }
+    public BoardTitlePage() {
 
     }
+
 }
