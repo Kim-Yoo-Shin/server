@@ -14,6 +14,7 @@ import server.server.repository.BoardRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -47,16 +48,23 @@ public class BoardService {
 
     }
 
-    public Board update( Board changeBoard) {
-       return boardRepository.update(changeBoard);
+    public Board update(Board changeBoard) {
+        return boardRepository.update(changeBoard);
     }
 
-    public Long findPage(Category category) {
+    /*
+    카테고리별 페이지
+     */
+    /*public Long findPage(Category category) {
         return boardRepository.categoryfindPage(category);
+    }*/
+
+    public Long findMainTotalPage() {
+        return boardRepository.findMainTotalPageCount();
     }
 
-    public Long findMainPage() {
-        return boardRepository.findPage();
+    public List<Board> findMainPageBoard(int nowPage, int perPage) {
+        return boardRepository.findMainPageBoard(nowPage, perPage);
     }
 
 }

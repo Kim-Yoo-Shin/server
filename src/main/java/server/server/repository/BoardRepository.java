@@ -39,19 +39,19 @@ public class BoardRepository {
                 .getResultList();
     }
 
-    public List<Board> findMemberBoard(Member member) {
+    /*public List<Board> findMemberBoard(Member member) {
         return em.createQuery("select b from Board b where b.member = :member  ", Board.class)
                 .setParameter("member", member)
                 .getResultList();
-    }
+    }*/
 
     //날짜로 댓글 조회
-    public List<Board> findPeriodBoard(LocalDateTime startDate, LocalDateTime finalDate) {
+   /* public List<Board> findPeriodBoard(LocalDateTime startDate, LocalDateTime finalDate) {
         return em.createQuery("select b from Board b where b.dateTime > :startDate and b.dateTime < :finalDate", Board.class)
                 .setParameter("startDate", startDate)
                 .setParameter("finalDate", finalDate)
                 .getResultList();
-    }
+    }*/
 
     public void plusLikeCount(Long id) {
         Board board = em.find(Board.class, id);
@@ -85,8 +85,6 @@ public class BoardRepository {
         changeBoard.setDateTime(LocalDateTime.now());
         Board oriBoard = findOne(changeBoard.getId());
         return boardChange(oriBoard, changeBoard);
-
-
     }
 
     public Board boardChange(Board oriBoard, Board changeboard) {
@@ -96,16 +94,28 @@ public class BoardRepository {
         return oriBoard;
     }
 
-
+    // 카테고리별 board page부분!!!
     public Long categoryfindPage(Category category) {
         return em.createQuery("select count(b.id) from Board b where b.category = :category ", Long.class)
                 .setParameter("category", category)
                 .getSingleResult();
 
     }
-    public Long findPage() {
+    //메인 페이지 보드
+    public Long findMainTotalPageCount() {
         return em.createQuery("select count(b.id) from Board b ", Long.class)
                 .getSingleResult();
     }
+
+//    1 0~ perBoard-1
+//    2 perBoard perBoard+ perBoard-1
+    public List<Board> findMainPageBoard(int nowPage, int perBoard) {
+        return em.createQuery("select b from Board b")
+                .setFirstResult((nowPage - 1) * perBoard)
+                .setMaxResults(nowPage * perBoard - 1)
+                .getResultList();
+    }
+
+
 
 }

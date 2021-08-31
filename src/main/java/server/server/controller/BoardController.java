@@ -69,16 +69,19 @@ public class BoardController {
      * (1) + paging 처리하기 =>
      */
     @GetMapping
-    public List<BoardTitleDto> findMainBoardList(@RequestParam(defaultValue = "1") int nowPage) {
+    public BoardTitlePage findMainBoardList(@RequestParam(defaultValue = "1",name = "nowpage") int nowPage) {
 
-        boardService.findPage()
-        BoardTitlePage boardTitlePage = new BoardTitlePage(nowPage);
-        List<Board> boards = boardService.findAll();
-        List<BoardTitleDto> boardTitleDtos = new ArrayList<>();
+        Long totalPage = boardService.findMainTotalPage();
+        BoardTitlePage boardTitlePage = new BoardTitlePage(nowPage,totalPage.intValue());
+
+        List<Board> boards = boardService.findMainPageBoard(nowPage, boardTitlePage.getPerBoard());
+
+        List<BoardTitleDto> boardTitleDtos = boardTitlePage.getBoardTitleDtos();
         for (Board board : boards) {
             boardTitleDtos.add(BoardTitleDto.from(board));
         }
-        return boardTitleDtos;
+
+        return boardTitlePage;
     }
 
     /**
