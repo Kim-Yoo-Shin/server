@@ -10,6 +10,9 @@ import server.server.boarddto.BoardDto;
 import server.server.boarddto.BoardTitlePage;
 import server.server.service.BoardService;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/boards")
@@ -17,49 +20,7 @@ import server.server.service.BoardService;
 public class BoardController {
 
     private final BoardService boardService;
-
-
-//    /**
-//     * board id로 조회하기!!
-//     *
-//     * @param id
-//     * @return
-//     */
-//    @GetMapping("/{boardId}")
-//    public BoardDto findPathBoard(@PathVariable("boardId") Long id) {
-//        Board board = boardService.findOne(id);
-//        return BoardDto.from(board);
-//    }
-//
-//
-//    /**
-//     * 전체 보드 조회 하기!!
-//     * 나눠서 주느
-//     *
-//     * @return
-//     */
-//    @GetMapping("/best")
-//    public List<BoardDto> findAllBestBoard() {
-//        List<Board> boards = boardService.findAll();
-//        List<BoardDto> boardDtos = new ArrayList<>();
-//        for (Board board : boards) {
-//            boardDtos.add(BoardDto.from(board));
-//        }
-//        return boardDtos;
-//    }
-//
-//    /**
-//     * board 저장하기!
-//     * member하고 등록하는 법 공부 후 처리하기.
-//     *
-//     * @param board
-//     */
-//    @PostMapping("/write")
-//    public void saveBoard(@RequestBody Board board) {
-//
-//        boardService.save(board);
-//    }
-
+    
 
     /**
      * (1) + paging 처리하기 =>
@@ -71,15 +32,7 @@ public class BoardController {
 
         return boardtitlepage;
     }
-    @GetMapping("/111")
-    public void find() {
-        for (int i = 0; i < 133; i++) {
-            Board board = new Board();
-            board.setTitle(Integer.toString(i));
-            boardService.save(board);
-        }
 
-    }
 
     /**
      * (2) category board paging
