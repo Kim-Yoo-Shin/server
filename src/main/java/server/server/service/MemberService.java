@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.server.domain.Member;
+import server.server.memberDto.UserVo;
 import server.server.repository.MemberRepository;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,10 +23,6 @@ public class MemberService {
      **/
     @Transactional
     public String join(Member member){
-        if(memberRepository.existsByUserId(member.getUserId())){
-            return "Can not join cause by duplicate userId.";
-        }
-        member.setDatetime(LocalDateTime.now());
         memberRepository.save(member);
         return member.getUserId().toString();
     }
@@ -39,6 +35,14 @@ public class MemberService {
     }
 
 
+    /**
+     * 로그인
+     **/
+    @Transactional
+    public Boolean login(UserVo userVo){
+        Optional<Member> targetId = memberRepository.findByUserId(userVo.getUserId());
+        if(targetId.isEmpty()) return false;
 
-
+        else return false;
+    }
 }

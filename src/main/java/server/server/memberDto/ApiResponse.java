@@ -1,4 +1,4 @@
-package server.server.payload;
+package server.server.memberDto;
 
 import lombok.Getter;
 import lombok.Setter;
