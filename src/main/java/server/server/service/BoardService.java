@@ -1,18 +1,17 @@
 package server.server.service;
 
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.server.domain.Board;
 import server.server.domain.Category;
-import server.server.dto.BoardDto;
+import server.server.boarddto.BoardDto;
+import server.server.boarddto.BoardTitleDto;
+import server.server.boarddto.BoardTitlePage;
 import server.server.repository.BoardRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -31,8 +30,10 @@ public class BoardService {
 
     }
 
-    public Board findOne(Long id) {
-        return boardRepository.findOne(id);
+    public BoardDto findOne(Long id) {
+
+        Board board = boardRepository.findOne(id);
+        return BoardDto.from(board);
     }
 
     public List<Board> findAll() {
@@ -52,19 +53,47 @@ public class BoardService {
         return boardRepository.update(changeBoard);
     }
 
-    /*
-    카테고리별 페이지
+
+    /**
+     * 처음 화면에서 페이징 처리
+     * @param nowPage
+     * @return
      */
-    /*public Long findPage(Category category) {
-        return boardRepository.categoryfindPage(category);
-    }*/
+    public BoardTitlePage findMainPage(int nowPage) {
+        BoardTitlePage boardTitlePage = new BoardTitlePage();
+        boardTitlePage.setNowPage(nowPage);
+        boardTitlePage.setTotalPage(boardRepository.findMainPageCount(boardTitlePage.getPerBoard())
+                .intValue());
+        List<Board> boards = boardRepository.findMainPageBoard(nowPage
+                ,boardTitlePage.getPerBoard());
 
-    public Long findMainTotalPage() {
-        return boardRepository.findMainTotalPageCount();
+        List<BoardTitleDto> boardTitleDtos = boardTitlePage.getBoardTitleDtos();
+        for (Board board : boards) {
+            boardTitleDtos.add(BoardTitleDto.from(board));
+        }
+        return boardTitlePage;
+
     }
 
-    public List<Board> findMainPageBoard(int nowPage, int perPage) {
-        return boardRepository.findMainPageBoard(nowPage, perPage);
+    /**
+     * category별 페이지 처리
+     * @param category
+     * @param nowPage
+     * @return
+     */
+    public BoardTitlePage findCategoryPage(Category category,int nowPage) {
+        BoardTitlePage boardTitlePage = new BoardTitlePage();
+        boardTitlePage.setNowPage(nowPage);
+        boardTitlePage.setTotalPage(boardRepository.findCategoryPageCount(category,boardTitlePage.getPerBoard())
+                .intValue());
+        List<BoardTitleDto> boardTitleDtos = boardTitlePage.getBoardTitleDtos();
+        List<Board> boards = boardRepository.findCategoryPageBoard(category, nowPage, boardTitlePage.getPerBoard());
+        for (Board board : boards) {
+            boardTitleDtos.add(BoardTitleDto.from(board));
+        }
+        return boardTitlePage;
+
     }
+
 
 }

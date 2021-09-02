@@ -6,17 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import server.server.domain.Board;
 import server.server.domain.Category;
-import server.server.dto.BoardDto;
-import server.server.dto.BoardTitleDto;
-import server.server.dto.BoardTitlePage;
+import server.server.boarddto.BoardDto;
+import server.server.boarddto.BoardTitlePage;
 import server.server.service.BoardService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping
+@RequestMapping("/api/boards")
 @RequiredArgsConstructor
 public class BoardController {
 
@@ -71,32 +67,31 @@ public class BoardController {
     @GetMapping
     public BoardTitlePage findMainBoardList(@RequestParam(defaultValue = "1",name = "nowpage") int nowPage) {
 
-        Long totalPage = boardService.findMainTotalPage();
-        BoardTitlePage boardTitlePage = new BoardTitlePage(nowPage,totalPage.intValue());
+        BoardTitlePage boardtitlepage = boardService.findMainPage(nowPage);
 
-        List<Board> boards = boardService.findMainPageBoard(nowPage, boardTitlePage.getPerBoard());
-
-        List<BoardTitleDto> boardTitleDtos = boardTitlePage.getBoardTitleDtos();
-        for (Board board : boards) {
-            boardTitleDtos.add(BoardTitleDto.from(board));
+        return boardtitlepage;
+    }
+    @GetMapping("/111")
+    public void find() {
+        for (int i = 0; i < 133; i++) {
+            Board board = new Board();
+            board.setTitle(Integer.toString(i));
+            boardService.save(board);
         }
 
-        return boardTitlePage;
     }
 
     /**
-     * (2) + paging 처리
-     *
+     * (2) category board paging
+     * @param category
+     * @param nowPage
      * @return
      */
+
     @GetMapping("/{category}")
-    public List<BoardTitleDto> findCategoryList(@PathVariable Category category) {
-        List<Board> boards = boardService.findCategory(category);
-        List<BoardTitleDto> boardTitleDtos = new ArrayList<>();
-        for (Board board : boards) {
-            boardTitleDtos.add(BoardTitleDto.from(board));
-        }
-        return boardTitleDtos;
+    public BoardTitlePage findCategoryList(@PathVariable Category category,
+                                           @RequestParam(name = "nowpage", defaultValue = "1") int nowPage) {
+        return boardService.findCategoryPage(category, nowPage);
     }
 
     /**
@@ -105,10 +100,9 @@ public class BoardController {
      * @param boardId
      * @return
      */
-    @GetMapping("/{boardId}")
+    @GetMapping("indi/{boardId}")
     public BoardDto findIndiBoard(@PathVariable Long boardId) {
-        Board board = boardService.findOne(boardId);
-        return BoardDto.from(board);
+        return boardService.findOne(boardId);
     }
 
     /**
@@ -137,8 +131,8 @@ public class BoardController {
     @PostMapping("/boards/count/{boardId}")
     public BoardDto plusBoard(@PathVariable Long boardId) {
         boardService.plusLikeCount(boardId);
-        Board board = boardService.findOne(boardId);
-        return BoardDto.from(board);
+        return boardService.findOne(boardId);
+
     }
 
 

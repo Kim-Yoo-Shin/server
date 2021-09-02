@@ -95,26 +95,41 @@ public class BoardRepository {
     }
 
     // 카테고리별 board page부분!!!
-    public Long categoryfindPage(Category category) {
-        return em.createQuery("select count(b.id) from Board b where b.category = :category ", Long.class)
+    public Long findCategoryPageCount(Category category, int perBoard) {
+        Long boardNum = em.createQuery("select count(b.id) from Board b where b.category = :category ", Long.class)
                 .setParameter("category", category)
                 .getSingleResult();
+        return boardNum / perBoard + 1;
+    }
+
+    public List<Board> findCategoryPageBoard(Category category, int nowPage, int perBoard) {
+        return em.createQuery("select b from Board b where b.category = :category order by b.dateTime desc ", Board.class)
+                .setParameter("category", category)
+                .setFirstResult((nowPage - 1) * perBoard)
+                .setMaxResults(perBoard)
+                .getResultList();
 
     }
-    //메인 페이지 보드
-    public Long findMainTotalPageCount() {
-        return em.createQuery("select count(b.id) from Board b ", Long.class)
+
+
+    //처음 화면 보드 페이지 숫자
+    public Long findMainPageCount(int perBoard) {
+        Long boardNum = em.createQuery("select count(b.id) from Board b ", Long.class)
                 .getSingleResult();
+
+        return boardNum / perBoard + 1;
     }
 
 //    1 0~ perBoard-1
 //    2 perBoard perBoard+ perBoard-1
+    // 2
     public List<Board> findMainPageBoard(int nowPage, int perBoard) {
-        return em.createQuery("select b from Board b")
+        return em.createQuery("select b from Board b order by b.dateTime desc ")
                 .setFirstResult((nowPage - 1) * perBoard)
-                .setMaxResults(nowPage * perBoard - 1)
+                .setMaxResults(perBoard)
                 .getResultList();
     }
+
 
 
 
