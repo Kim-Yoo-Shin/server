@@ -6,13 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import server.server.domain.Board;
 import server.server.domain.Category;
-import server.server.dto.BoardDto;
-import server.server.dto.BoardTitleDto;
-import server.server.dto.BoardTitlePage;
+import server.server.boarddto.BoardDto;
+import server.server.boarddto.BoardTitlePage;
 import server.server.service.BoardService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @RestController
