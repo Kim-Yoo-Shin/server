@@ -1,7 +1,10 @@
 package server.server.controller;
 
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,21 +34,26 @@ import java.util.Collections;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
+@Slf4j
 public class LoginController {
+    /**
+     * 생성자 주입으로 변경
+     * */
     @Autowired
-    AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    JwtTokenProvider tokenProvider;
+    private final JwtTokenProvider tokenProvider;
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerMember(@Valid @RequestBody MemberForm memberForm) {
@@ -53,9 +61,9 @@ public class LoginController {
             return new ResponseEntity(new ApiResponse(false, "User id has already exist!"),
                     HttpStatus.BAD_REQUEST);
         }
-        Member member = new Member(memberForm.getUserId(), memberForm.getName(),
-                passwordEncoder.encode(memberForm.getPassward()), LocalDateTime.now());
-
+        Member member = new Member(memberForm.getUserId(), memberForm.getUserName(),
+                passwordEncoder.encode(memberForm.getPassword()), LocalDateTime.now());
+//
 //        RoleDao roleDao = new RoleDao(RoleName.ROLE_USER);
 //        roleRepository.save(roleDao);
         RoleDao userRole = roleRepository.findByName(RoleName.ROLE_USER)
