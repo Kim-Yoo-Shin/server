@@ -1,8 +1,13 @@
 package server.server.service;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import server.server.config.security.JwtAuthenticationFilter;
+import server.server.config.security.JwtTokenProvider;
 import server.server.domain.Member;
 import server.server.memberDto.UserVo;
 import server.server.repository.MemberRepository;
@@ -13,10 +18,17 @@ import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true) // 읽기 전용 메서드 성능 최적화
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class MemberService {
 
+    @Autowired
     private final MemberRepository memberRepository;
+    @Autowired
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    @Autowired
+    private final JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 회원가입
