@@ -3,6 +3,7 @@ package server.server.service;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import server.server.domain.Member;
 import server.server.memberDto.UserVo;
 import server.server.repository.MemberRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -56,5 +58,12 @@ public class MemberService {
         if(targetId.isEmpty()) return false;
 
         else return false;
+    }
+
+    @Secured({"ROLE_USER","ROLE_MANA"})
+    public Optional<Member> getCurrentUserInfo(HttpServletRequest request){
+        String token = jwtAuthenticationFilter.getJwtFromRequest(request);
+        Long currentUserId = jwtTokenProvider.getUserIdFromJWT(token);
+        return memberRepository.findById(currentUserId);
     }
 }

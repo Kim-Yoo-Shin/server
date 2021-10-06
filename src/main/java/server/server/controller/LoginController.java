@@ -26,7 +26,9 @@ import server.server.memberDto.MemberForm;
 import server.server.memberDto.UserVo;
 import server.server.repository.MemberRepository;
 import server.server.repository.RoleRepository;
+import server.server.service.MemberService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.Collections;

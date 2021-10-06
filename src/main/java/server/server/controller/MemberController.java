@@ -10,6 +10,7 @@ import server.server.memberDto.ApiResponse;
 import server.server.memberDto.MemberForm;
 import server.server.service.MemberService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -20,6 +21,11 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
+    @GetMapping("/who")
+    public ResponseEntity<?> who(HttpServletRequest request){
+        Member man = memberService.getCurrentUserInfo(request).get();
 
+        return ResponseEntity.ok(man);
+    }
 
 }
