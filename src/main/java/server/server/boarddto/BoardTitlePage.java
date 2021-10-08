@@ -1,4 +1,4 @@
-package server.server.dto;
+package server.server.boarddto;
 
 import lombok.Getter;
 import lombok.Setter;

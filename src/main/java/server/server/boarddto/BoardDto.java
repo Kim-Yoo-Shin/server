@@ -1,7 +1,5 @@
-package server.server.dto;
+package server.server.boarddto;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 import server.server.domain.Board;
 import server.server.domain.Category;
 import server.server.domain.Member;
