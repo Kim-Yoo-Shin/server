@@ -1,4 +1,4 @@
-package server.server.payload;
+package server.server.memberDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
-public class SignInRequest {
+public class UserVo {
     @NotBlank
     private String userId;
     @NotBlank

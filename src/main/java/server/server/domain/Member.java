@@ -12,6 +12,9 @@ import javax.persistence.GeneratedValue;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "member")
@@ -35,17 +38,24 @@ public class Member {
     private String name;
 
     @NotBlank
-    @Size(max = 30)
+    @Size(max = 100)
     private String password;
 
     @Column(name = "create_data")
     private LocalDateTime datetime;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "member_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<RoleDao> roles = new HashSet<>();
+
     public Member() {
     }
-    public Member(String userId,String name, String password) {
+    public Member(String userId, String name, String password,LocalDateTime localDateTime) {
         this.userId = userId;
         this.name = name;
         this.password = password;
+        this.datetime = localDateTime;
     }
 }
