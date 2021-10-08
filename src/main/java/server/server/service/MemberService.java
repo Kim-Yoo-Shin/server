@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import server.server.config.security.JwtAuthenticationFilter;
 import server.server.config.security.JwtTokenProvider;
 import server.server.domain.Member;
+import server.server.memberDto.MemberForm;
 import server.server.memberDto.UserVo;
 import server.server.repository.MemberRepository;
 
@@ -58,6 +59,29 @@ public class MemberService {
         if(targetId.isEmpty()) return false;
 
         else return false;
+    }
+
+    /**
+     * 회원 정보 수정
+     **/
+    @Transactional
+    public boolean patchInfo(String userId, MemberForm modifiedInfo){
+        Optional<Member> optMember = memberRepository.findByUserId(userId);
+        Member member = optMember.get();
+
+        if (member == null) {
+            return false;
+        }
+
+        if (modifiedInfo.getPassword() != null) {
+            member.setPassword(passwordEncoder.encode(modifiedInfo.getPassword()));
+        }
+        if (modifiedInfo.getUserName() != null) {
+            member.setName(modifiedInfo.getUserName());
+        }
+
+        memberRepository.save(member);
+        return true;
     }
 
     @Secured({"ROLE_USER","ROLE_MANA"})
