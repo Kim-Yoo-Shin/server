@@ -25,6 +25,14 @@ public class MemberController {
     @Autowired
     private final MemberService memberService;
 
+/*    @GetMapping("/test")
+    public ResponseEntity<?> currentUser(HttpServletRequest request){
+        Member member = memberService.getCurrentUserInfo(request).get();
+        return ResponseEntity.ok(member);
+    }
+
+ */
+
     @Secured({"ROLE_USER","ROLE_ADMIN"})
     @ResponseBody
     @PatchMapping("/user")
@@ -42,7 +50,7 @@ public class MemberController {
 
     @Secured({"ROLE_USER","ROLE_ADMIN"})
     @ResponseBody
-    @GetMapping("/user/info")
+    @GetMapping("/user")
     public Optional<Member> currentUserInfo(HttpServletRequest request){
         return memberService.getCurrentUserInfo(request);
     }
