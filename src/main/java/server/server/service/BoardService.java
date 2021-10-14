@@ -17,19 +17,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class BoardService {
 
     @Autowired
     private final BoardRepository boardRepository;
 
 
-    public void save(Board board) {
 
-        boardRepository.save(board);
-
-
-    }
 
     public BoardDto findOne(Long id) {
 

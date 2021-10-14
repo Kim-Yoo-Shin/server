@@ -4,23 +4,24 @@ package server.server.repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import server.server.domain.Board;
 import server.server.domain.Category;
 import server.server.domain.Member;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-@Transactional()
+@Transactional(readOnly = true)
 public class BoardRepository {
 
     private final EntityManager em;
 
+    @Transactional
     public void save(Board board) {
         board.setDateTime(LocalDateTime.now());
         em.persist(board);
@@ -138,7 +139,6 @@ public class BoardRepository {
                 .getSingleResult().intValue();
         return (boardNum / perBoard) + 1;
     }
-
     public List<Board> findBoard(Category category, int nowPage, int perBoard) {
         return em.createQuery("select b " +
                 "from Board b join fetch b.member m " +

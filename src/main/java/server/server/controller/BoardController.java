@@ -1,139 +1,82 @@
 package server.server.controller;
 
 
+import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import server.server.domain.Board;
 import server.server.domain.Category;
 import server.server.boarddto.BoardDto;
 import server.server.boarddto.BoardTitlePage;
+import server.server.domain.Member;
 import server.server.repository.BoardRepository;
 import server.server.service.BoardService;
+import server.server.service.MemberService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
+import java.net.http.HttpRequest;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/boards")
 @RequiredArgsConstructor
 public class BoardController {
 
 
+    @Autowired
     private final BoardService boardService;
+    @Autowired
     private final BoardRepository boardRepository;
-
-//    /**
-//     * board id로 조회하기!!
-//     *
-//     * @param id
-//     * @return
-//     */
-//    @GetMapping("/{boardId}")
-//    public BoardDto findPathBoard(@PathVariable("boardId") Long id) {
-//        Board board = boardService.findOne(id);
-//        return BoardDto.from(board);
-//    }
-//
-//
-//    /**
-//     * 전체 보드 조회 하기!!
-//     * 나눠서 주느
-//     *
-//     * @return
-//     */
-//    @GetMapping("/best")
-//    public List<BoardDto> findAllBestBoard() {
-//        List<Board> boards = boardService.findAll();
-//        List<BoardDto> boardDtos = new ArrayList<>();
-//        for (Board board : boards) {
-//            boardDtos.add(BoardDto.from(board));
-//        }
-//        return boardDtos;
-//    }
-//
-//    /**
-//     * board 저장하기!
-//     * member하고 등록하는 법 공부 후 처리하기.
-//     *
-//     * @param board
-//     */
-//    @PostMapping("/write")
-//    public void saveBoard(@RequestBody Board board) {
-//
-//        boardService.save(board);
-//    }
-
-
+    @Autowired
+    private final MemberService memberService;
     /**
-     * (1) + paging 처리하기 =>
+     * 보드 등록 + validation처리 + member 더해주는거 처리
      */
-    @GetMapping
-    public BoardTitlePage findMainBoardList(@RequestParam(defaultValue = "1",name = "nowpage") int nowPage) {
+    @PostMapping("/save")
+    public void saveBoard(HttpServletRequest request, @RequestBody BoardSaveRequestDto bsrd) {
+        // 토큰을 받지 않고는 save 테스트 할 수 없다.
 
-        BoardTitlePage boardtitlepage = boardService.findMainPage(nowPage);
-
-        return boardtitlepage;
+        Member member = memberService.getCurrentUserInfo(request).get();
+        Board board = BoardSaveRequestDto.changeToBoard(bsrd, member);
+        boardRepository.save(board);
     }
-    @GetMapping("/111")
-    public void find() {
-        for (int i = 0; i < 133; i++) {
+    @Data
+    @AllArgsConstructor
+    static class BoardSaveRequestDto{
+        @NotNull
+        @Size(max = 20, min = 2)
+        private String title;
+        @NotNull
+        @Max(value = 2000L)
+        private String content;
+        @NotNull
+        @Size(max = 10, min = 6)
+        private String password;
+        private Category category;
+
+        static Board changeToBoard(BoardSaveRequestDto boardSaveRequestDto,Member member) {
             Board board = new Board();
-            board.setTitle(Integer.toString(i));
-            boardService.save(board);
+            board.setTitle(boardSaveRequestDto.getTitle());
+            board.setContent(boardSaveRequestDto.getContent());
+            board.setPassword(boardSaveRequestDto.getPassword());
+            board.setCategory(boardSaveRequestDto.getCategory());
+            board.setMember(member);
+            return board;
         }
-
     }
 
-    /**
-     * (2) category board paging
-     * @param category
-     * @param nowPage
-     * @return
-     */
 
-    @GetMapping("/{category}")
-    public BoardTitlePage findCategoryList(@PathVariable Category category,
-                                           @RequestParam(name = "nowpage", defaultValue = "1") int nowPage) {
-        return boardService.findCategoryPage(category, nowPage);
-    }
-
-    /**
-     * (3) =
-     *
-     * @param boardId
-     * @return
-     */
-    @GetMapping("indi/{boardId}")
-    public BoardDto findIndiBoard(@PathVariable Long boardId) {
-        return boardService.findOne(boardId);
-    }
-
-    /**
-     * (4)-1 보드 등록 + validation처리 + member 더해주는거 처리
-     */
-    @PostMapping("/boards/add")
-    public BoardDto saveBoard(@RequestBody Board board) {
-        boardService.save(board);
-        return BoardDto.from(board);
-    }
-
-    /**
-     * (5) + validation처리하기.
-     */
-
-    @PostMapping("/boards/update")
-    public BoardDto updateBoard(@RequestBody Board changeBoard) {
-        Board board = boardService.update(changeBoard);
-
-        return BoardDto.from(board);
-    }
-
-    /**
-     * (6)  plustcount
-     */
-    @PostMapping("/boards/count/{boardId}")
+    @PostMapping("/count/{boardId}")
     public BoardDto plusBoard(@PathVariable Long boardId) {
         boardService.plusLikeCount(boardId);
         return boardService.findOne(boardId);
