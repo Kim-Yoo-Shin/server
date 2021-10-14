@@ -8,7 +8,11 @@ import server.server.domain.Board;
 import server.server.domain.Category;
 import server.server.boarddto.BoardDto;
 import server.server.boarddto.BoardTitlePage;
+import server.server.repository.BoardRepository;
 import server.server.service.BoardService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -16,8 +20,9 @@ import server.server.service.BoardService;
 @RequiredArgsConstructor
 public class BoardController {
 
-    private final BoardService boardService;
 
+    private final BoardService boardService;
+    private final BoardRepository boardRepository;
 
 //    /**
 //     * board id로 조회하기!!
@@ -134,6 +139,7 @@ public class BoardController {
         return boardService.findOne(boardId);
 
     }
+
 
 
 }

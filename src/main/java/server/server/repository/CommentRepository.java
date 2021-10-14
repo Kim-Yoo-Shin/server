@@ -27,27 +27,6 @@ public class CommentRepository {
     }
 
 
-    public List<Comment> findBoardComment(Board board) {
-        return em.createQuery("select c from Comment c where c.board = :board", Comment.class)
-                .setParameter("board", board)
-                .getResultList();
-    }
-
-
-    //멤버의 댓글 확
-    public List<Comment> findMemberComment(Member member) {
-        return em.createQuery("select c from Comment c where c.member = :member", Comment.class)
-                .setParameter("member", member)
-                .getResultList();
-    }
-
-    //날짜로 댓글 확
-    public List<Comment> findPeriodComment(LocalDateTime startDate, LocalDateTime finalDate) {
-        return em.createQuery("select c from Comment c where c.dateTime > :startDate and c.dateTime < :finalDate", Comment.class)
-                .setParameter("startDate", startDate)
-                .setParameter("finalDate", finalDate)
-                .getResultList();
-    }
 
 
 

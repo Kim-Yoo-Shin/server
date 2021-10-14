@@ -4,13 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.bytecode.internal.javassist.BytecodeProviderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.server.domain.Category;
-import server.server.memberDto.ApiResponse;
 import server.server.repository.BoardRepository;
 import server.server.service.MemberService;
 
@@ -36,17 +32,17 @@ public class pageController {
 
     @GetMapping("/board")
     public Result getBoardPage(@RequestParam(name = "category", defaultValue = "MAIN") Category category,
-                                     @RequestParam(name = "nowpage", defaultValue = "1") int nowPage,
-                                     @RequestParam(name = "perboard" , defaultValue = "10")int perBoard) {
-
-        int totalPage = boardRepository.findPage(category,perBoard);
+                               @RequestParam(name = "nowpage", defaultValue = "1") int nowPage,
+                               @RequestParam(name = "perboard", defaultValue = "10") int perBoard) {
+        int totalPage = boardRepository.findPage(category, perBoard);
         List<BoardDataDto> boardDataDtoList = boardRepository.findBoard(category, nowPage, perBoard)
                 .stream()
-                .map(board -> new BoardDataDto(board.getId(), board.getTitle(), board.getContent(), board.getMember().getName(), board.getDateTime(), board.getLikeCount(),new BoardPageDto(totalPage,nowPage,perBoard)))
+                .map(board -> new BoardDataDto(board.getId(), board.getTitle(), board.getContent(), board.getMember().getName(), board.getDateTime(), board.getLikeCount(), new BoardPageDto(totalPage, nowPage, perBoard)))
                 .collect(Collectors.toList());
 
         return new Result(boardDataDtoList);
     }
+
 
     @Data
     @AllArgsConstructor
