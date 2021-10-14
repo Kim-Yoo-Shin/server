@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import server.server.controller.pageController;
 import server.server.domain.Board;
 import server.server.domain.Category;
 import server.server.boarddto.BoardDto;
@@ -94,6 +95,8 @@ public class BoardService {
         return boardTitlePage;
 
     }
+
+
 
 
 }

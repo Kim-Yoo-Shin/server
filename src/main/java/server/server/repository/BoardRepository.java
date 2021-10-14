@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -131,6 +132,21 @@ public class BoardRepository {
     }
 
 
+    public int findPage(Category category,int perBoard) {
+        int boardNum = em.createQuery("select count(b) from Board b where b.category = :category", Long.class)
+                .setParameter("category", category)
+                .getSingleResult().intValue();
+        return (boardNum / perBoard) + 1;
+    }
 
-
+    public List<Board> findBoard(Category category, int nowPage, int perBoard) {
+        return em.createQuery("select b " +
+                "from Board b join fetch b.member m " +
+                "where b.category = :category " +
+                "order by b.id", Board.class)
+                .setParameter("category", category)
+                .setFirstResult((nowPage - 1) * perBoard)
+                .setMaxResults(nowPage * perBoard)
+                .getResultList();
+    }
 }
