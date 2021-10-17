@@ -80,7 +80,7 @@ public class BoardController {
     }
 
     @GetMapping("/find")
-    public BoardResponseDto findBoard(@RequestParam("boardId") Long boardId) {
+    public BoardResponseDto findBoard(@RequestParam("boardid") Long boardId) {
         Board board = boardRepository.findBoard(boardId);
         return new BoardResponseDto(board.getId(), board.getTitle(), board.getMember().getName(), board.getContent(), board.getLikeCount());
     }
@@ -95,7 +95,7 @@ public class BoardController {
 
     }
     @GetMapping("/count")
-    public void plusLikeCount(@RequestParam Long boardId) {
+    public void plusLikeCount(@RequestParam("boardid") Long boardId) {
         boardRepository.plusLikeCount(boardId);
 
     }

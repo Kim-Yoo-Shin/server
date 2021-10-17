@@ -74,7 +74,9 @@ public class BoardRepository {
 
     public Board findBoard(Long boardId) {
         return em.createQuery("select b " +
-                "from Board b join fetch b.member",Board.class)
+                "from Board b join fetch b.member " +
+                "where b.id = :boardId ",Board.class)
+                .setParameter("boardId",boardId)
                 .getSingleResult();
     }
 
