@@ -32,7 +32,7 @@ public class pageBoardController {
     }
 
     @GetMapping("/board")
-    public Result getBoardPage(@RequestParam(name = "category", defaultValue = "MAIN") Category category,
+    public BoardListPageDto getBoardPage(@RequestParam(name = "category", defaultValue = "MAIN") Category category,
                                @RequestParam(name = "nowpage", defaultValue = "1") int nowPage,
                                @RequestParam(name = "perboard", defaultValue = "10") int perBoard,
                                @RequestParam(name = "sort_index", defaultValue = "NORMAL") SortMethod sortMethod) {
@@ -42,13 +42,13 @@ public class pageBoardController {
                 .map(board -> new BoardListDto(board.getId(), board.getTitle(), board.getContent(), board.getMember().getName(), board.getDateTime(), board.getLikeCount()))
                 .collect(Collectors.toList());
 
-        return new Result(boardDataDtoList, new BoardPageDto(totalPage, nowPage, perBoard));
+        return new BoardListPageDto(boardDataDtoList, new BoardPageDto(totalPage, nowPage, perBoard));
     }
 
 
     @Data
     @AllArgsConstructor
-    static class Result<T>{
+    static class BoardListPageDto<T>{
         private T boardData;
         private BoardPageDto pageData;
 

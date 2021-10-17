@@ -79,21 +79,14 @@ public class BoardController {
         }
     }
 
-    @GetMapping("/{boardId}")
-    public BoardResponseDto findBoard(@PathVariable Long boardId) {
+    @GetMapping("/find")
+    public BoardResponseDto findBoard(@RequestParam("boardId") Long boardId) {
         Board board = boardRepository.findBoard(boardId);
         return new BoardResponseDto(board.getId(), board.getTitle(), board.getMember().getName(), board.getContent(), board.getLikeCount());
     }
-
-    @PostMapping("/count/{boardId}")
-    public void plusLikeCount(@PathVariable Long boardId) {
-        boardRepository.plusLikeCount(boardId);
-
-    }
-
     @Data
     @AllArgsConstructor
-    static class BoardResponseDto{
+    static class BoardResponseDto {
         private Long boardId;
         private String title;
         private String memberName;
@@ -101,6 +94,30 @@ public class BoardController {
         private int likecount;
 
     }
+    @GetMapping("/count")
+    public void plusLikeCount(@RequestParam Long boardId) {
+        boardRepository.plusLikeCount(boardId);
+
+    }
+
+    //비밀번호 확인 체크.
+    @PostMapping("/update")
+    public void updateBoardData(@RequestBody BoardUpdateDto boardUpdateDto){
+        boardRepository.updateBoard(boardUpdateDto.getBoardId(), boardUpdateDto.getTitle(), boardUpdateDto.getContent());
+
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class BoardUpdateDto{
+        private Long boardId;
+        private String title;
+        private String content;
+
+
+    }
+
 
 
 }

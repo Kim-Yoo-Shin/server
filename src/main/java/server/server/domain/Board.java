@@ -44,4 +44,5 @@ public class Board {
 
     private int likeCount;
 
+    private LocalDateTime updateDateTime;
 }

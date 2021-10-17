@@ -22,6 +22,7 @@ public class BoardRepository {
     @Transactional
     public void save(Board board) {
         board.setDateTime(LocalDateTime.now());
+        board.setUpdateDateTime(LocalDateTime.now());
         em.persist(board);
     }
     public Board findOne(Long id) {
@@ -75,5 +76,14 @@ public class BoardRepository {
         return em.createQuery("select b " +
                 "from Board b join fetch b.member",Board.class)
                 .getSingleResult();
+    }
+
+    @Transactional
+    public void updateBoard(Long boardId, String title, String content) {
+        Board board = findBoard(boardId);
+        board.setContent(content);
+        board.setTitle(title);
+        board.setUpdateDateTime(LocalDateTime.now());
+
     }
 }
