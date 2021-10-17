@@ -1,30 +1,21 @@
 package server.server.controller;
 
 
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import server.server.boarddto.BoardFindResponseDto;
+import server.server.boarddto.BoardSaveRequestDto;
+import server.server.boarddto.BoardUpdateDto;
 import server.server.domain.Board;
-import server.server.domain.Category;
-import server.server.boarddto.BoardDto;
-import server.server.boarddto.BoardTitlePage;
 import server.server.domain.Member;
 import server.server.repository.BoardRepository;
-import server.server.service.BoardService;
 import server.server.service.MemberService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Size;
-import java.net.http.HttpRequest;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -45,55 +36,24 @@ public class BoardController {
     public void saveBoard(HttpServletRequest request, @RequestBody BoardSaveRequestDto bsrd) {
         // 토큰을 받지 않고는 save 테스트 할 수 없다.
         // board member cascade 생각해보기.
-//        Member member = memberService.getCurrentUserInfo(request).get();
-        Member member = new Member();
-        member.setName("aaa");
-        member.setPassword("aaa");
-        member.setDatetime(LocalDateTime.now());
-        member.setUserId("aaa");
+        Member member = memberService.getCurrentUserInfo(request).get();
+//        Member member = new Member();
+//        member.setName("aaa");
+//        member.setPassword("aaa");
+//        member.setDatetime(LocalDateTime.now());
+//        member.setUserId("aaa");
         memberService.join(member);
         Board board = BoardSaveRequestDto.changeToBoard(bsrd, member);
         boardRepository.save(board);
     }
-    @Data
-    @AllArgsConstructor
-    static class BoardSaveRequestDto{
-        @NotNull
-        @Size(max = 20, min = 2)
-        private String title;
-        @NotNull
-        private String content;
-        @NotNull
-        @Size(max = 10, min = 6)
-        private String password;
-        private Category category;
 
-        static Board changeToBoard(BoardSaveRequestDto boardSaveRequestDto,Member member) {
-            Board board = new Board();
-            board.setTitle(boardSaveRequestDto.getTitle());
-            board.setContent(boardSaveRequestDto.getContent());
-            board.setPassword(boardSaveRequestDto.getPassword());
-            board.setCategory(boardSaveRequestDto.getCategory());
-            board.setMember(member);
-            return board;
-        }
-    }
 
     @GetMapping("/find")
-    public BoardResponseDto findBoard(@RequestParam("boardid") Long boardId) {
+    public BoardFindResponseDto findBoard(@RequestParam("boardid") Long boardId) {
         Board board = boardRepository.findBoard(boardId);
-        return new BoardResponseDto(board.getId(), board.getTitle(), board.getMember().getName(), board.getContent(), board.getLikeCount());
+        return new BoardFindResponseDto(board.getId(), board.getTitle(), board.getMember().getName(), board.getContent(), board.getLikeCount());
     }
-    @Data
-    @AllArgsConstructor
-    static class BoardResponseDto {
-        private Long boardId;
-        private String title;
-        private String memberName;
-        private String content;
-        private int likecount;
 
-    }
     @GetMapping("/count")
     public void plusLikeCount(@RequestParam("boardid") Long boardId) {
         boardRepository.plusLikeCount(boardId);
@@ -108,15 +68,7 @@ public class BoardController {
 
     }
 
-    @Data
-    @AllArgsConstructor
-    static class BoardUpdateDto{
-        private Long boardId;
-        private String title;
-        private String content;
 
-
-    }
 
 
 

@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import server.server.boarddto.BoardListDto;
+import server.server.boarddto.BoardListPageDto;
+import server.server.boarddto.BoardPageDto;
 import server.server.boarddto.SortMethod;
 import server.server.domain.Category;
 import server.server.repository.BoardRepository;
@@ -21,7 +24,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/page")
 @RequiredArgsConstructor
 @Slf4j
-public class pageBoardController {
+public class PageBoardController {
     @Autowired
     private final MemberService memberService;
     @Autowired
@@ -33,9 +36,9 @@ public class pageBoardController {
 
     @GetMapping("/board")
     public BoardListPageDto getBoardPage(@RequestParam(name = "category", defaultValue = "MAIN") Category category,
-                               @RequestParam(name = "nowpage", defaultValue = "1") int nowPage,
-                               @RequestParam(name = "perboard", defaultValue = "10") int perBoard,
-                               @RequestParam(name = "sort_index", defaultValue = "NORMAL") SortMethod sortMethod) {
+                                         @RequestParam(name = "nowpage", defaultValue = "1") int nowPage,
+                                         @RequestParam(name = "perboard", defaultValue = "10") int perBoard,
+                                         @RequestParam(name = "sort_index", defaultValue = "NORMAL") SortMethod sortMethod) {
         int totalPage = boardRepository.findPage(category, perBoard);
         List<BoardListDto> boardDataDtoList = boardRepository.findBoardList(category, nowPage, perBoard,sortMethod)
                 .stream()
@@ -46,30 +49,7 @@ public class pageBoardController {
     }
 
 
-    @Data
-    @AllArgsConstructor
-    static class BoardListPageDto<T>{
-        private T boardData;
-        private BoardPageDto pageData;
-
-    }
-    @Data
-    @AllArgsConstructor
-    static class BoardPageDto {
-        private int totalPage;
-        private int nowPage;
-        private int perBoard;
-    }
-    @Data
-    @AllArgsConstructor
-    static class BoardListDto {
-        private Long boardId;
-        private String title;
-        private String content;
-        private String userName;
-        private LocalDateTime dateTime;
-        private int likeCount;
 
 
-    }
+
 }
