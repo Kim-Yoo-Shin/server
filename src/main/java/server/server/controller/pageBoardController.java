@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import server.server.boarddto.SortMethod;
 import server.server.domain.Category;
 import server.server.repository.BoardRepository;
 import server.server.service.MemberService;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/page")
 @RequiredArgsConstructor
 @Slf4j
-public class pageController {
+public class pageBoardController {
     @Autowired
     private final MemberService memberService;
     @Autowired
@@ -33,21 +34,23 @@ public class pageController {
     @GetMapping("/board")
     public Result getBoardPage(@RequestParam(name = "category", defaultValue = "MAIN") Category category,
                                @RequestParam(name = "nowpage", defaultValue = "1") int nowPage,
-                               @RequestParam(name = "perboard", defaultValue = "10") int perBoard) {
+                               @RequestParam(name = "perboard", defaultValue = "10") int perBoard,
+                               @RequestParam(name = "sort_index", defaultValue = "NORMAL") SortMethod sortMethod) {
         int totalPage = boardRepository.findPage(category, perBoard);
-        List<BoardDataDto> boardDataDtoList = boardRepository.findBoard(category, nowPage, perBoard)
+        List<BoardDataDto> boardDataDtoList = boardRepository.findBoard(category, nowPage, perBoard,sortMethod)
                 .stream()
-                .map(board -> new BoardDataDto(board.getId(), board.getTitle(), board.getContent(), board.getMember().getName(), board.getDateTime(), board.getLikeCount(), new BoardPageDto(totalPage, nowPage, perBoard)))
+                .map(board -> new BoardDataDto(board.getId(), board.getTitle(), board.getContent(), board.getMember().getName(), board.getDateTime(), board.getLikeCount()))
                 .collect(Collectors.toList());
 
-        return new Result(boardDataDtoList);
+        return new Result(boardDataDtoList, new BoardPageDto(totalPage, nowPage, perBoard));
     }
 
 
     @Data
     @AllArgsConstructor
     static class Result<T>{
-        private T data;
+        private T boardData;
+        private BoardPageDto pageData;
 
     }
     @Data
@@ -66,7 +69,6 @@ public class pageController {
         private String userName;
         private LocalDateTime dateTime;
         private int likeCount;
-        private BoardPageDto boardPageDto;
 
 
     }

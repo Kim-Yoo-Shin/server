@@ -2,17 +2,15 @@ package server.server.repository;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import server.server.boarddto.SortMethod;
 import server.server.domain.Board;
 import server.server.domain.Category;
-import server.server.domain.Member;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -26,7 +24,6 @@ public class BoardRepository {
         board.setDateTime(LocalDateTime.now());
         em.persist(board);
     }
-
     public Board findOne(Long id) {
         return em.find(Board.class, id);
     }
@@ -35,102 +32,8 @@ public class BoardRepository {
         return em.createQuery("select b from Board b", Board.class).getResultList();
     }
 
-    public List<Board> findCategoryAll(Category category) {
-        return em.createQuery("select b from Board b where b.category = :category", Board.class)
-                .setParameter("category", category)
-                .getResultList();
-    }
-
-    /*public List<Board> findMemberBoard(Member member) {
-        return em.createQuery("select b from Board b where b.member = :member  ", Board.class)
-                .setParameter("member", member)
-                .getResultList();
-    }*/
-
-    //날짜로 댓글 조회
-   /* public List<Board> findPeriodBoard(LocalDateTime startDate, LocalDateTime finalDate) {
-        return em.createQuery("select b from Board b where b.dateTime > :startDate and b.dateTime < :finalDate", Board.class)
-                .setParameter("startDate", startDate)
-                .setParameter("finalDate", finalDate)
-                .getResultList();
-    }*/
-
-    public void plusLikeCount(Long id) {
-        Board board = em.find(Board.class, id);
-        board.setLikeCount(board.getLikeCount() + 1);
-    }
-
-//    /**
-//     * //plus 최근 날짜 10일 전까지 추천 게시글
-//     * @return
-//     */
-//    /*public List<Board> findOrderLike() {
-//       return em.createQuery("select b from Board b order by b.likeCount desc ,b.dateTime desc ",Board.class)
-//                .setFirstResult(0)
-//                .setMaxResults(20)
-//                .getResultList();
-//    }*/
-//
-//    /**
-//     * board 페이지 가져오기
-//     */
-//
-//    public Integer findBoardPage(Category category) {
-//        return em.createQuery("select count(b) from Board b where b.category = :category", Integer.class)
-//                .setParameter("category", category)
-//                .getSingleResult();
-//
-//    }
 
 
-    public Board update(Board changeBoard) {
-        changeBoard.setDateTime(LocalDateTime.now());
-        Board oriBoard = findOne(changeBoard.getId());
-        return boardChange(oriBoard, changeBoard);
-    }
-
-    public Board boardChange(Board oriBoard, Board changeboard) {
-        oriBoard.setDateTime(changeboard.getDateTime());
-        oriBoard.setTitle(changeboard.getTitle());
-        oriBoard.setContent(changeboard.getContent());
-        return oriBoard;
-    }
-
-    // 카테고리별 board page부분!!!
-    public Long findCategoryPageCount(Category category, int perBoard) {
-        Long boardNum = em.createQuery("select count(b.id) from Board b where b.category = :category ", Long.class)
-                .setParameter("category", category)
-                .getSingleResult();
-        return boardNum / perBoard + 1;
-    }
-
-    public List<Board> findCategoryPageBoard(Category category, int nowPage, int perBoard) {
-        return em.createQuery("select b from Board b where b.category = :category order by b.dateTime desc ", Board.class)
-                .setParameter("category", category)
-                .setFirstResult((nowPage - 1) * perBoard)
-                .setMaxResults(perBoard)
-                .getResultList();
-
-    }
-
-
-    //처음 화면 보드 페이지 숫자
-    public Long findMainPageCount(int perBoard) {
-        Long boardNum = em.createQuery("select count(b.id) from Board b ", Long.class)
-                .getSingleResult();
-
-        return boardNum / perBoard + 1;
-    }
-
-//    1 0~ perBoard-1
-//    2 perBoard perBoard+ perBoard-1
-    // 2
-    public List<Board> findMainPageBoard(int nowPage, int perBoard) {
-        return em.createQuery("select b from Board b order by b.dateTime desc ")
-                .setFirstResult((nowPage - 1) * perBoard)
-                .setMaxResults(perBoard)
-                .getResultList();
-    }
 
 
     public int findPage(Category category,int perBoard) {
@@ -139,14 +42,33 @@ public class BoardRepository {
                 .getSingleResult().intValue();
         return (boardNum / perBoard) + 1;
     }
-    public List<Board> findBoard(Category category, int nowPage, int perBoard) {
-        return em.createQuery("select b " +
+
+    public List<Board> findBoard(Category category, int nowPage, int perBoard, SortMethod sortMethod) {
+        String query = "select b " +
                 "from Board b join fetch b.member m " +
                 "where b.category = :category " +
-                "order by b.id", Board.class)
+                "order by ";
+        query = queryMade(query, sortMethod);
+        return em.createQuery(query, Board.class)
                 .setParameter("category", category)
                 .setFirstResult((nowPage - 1) * perBoard)
                 .setMaxResults(nowPage * perBoard)
                 .getResultList();
     }
+    public String queryMade(String query, SortMethod sortMethod){
+        if (sortMethod == SortMethod.NORMAL) {
+            query = query + "b.dateTime desc";
+        }
+        else if(sortMethod == SortMethod.LIKE){
+            query = query + "b.likeCount desc";
+        }
+
+        return query;
+    }
+    @Transactional
+    public void plusLikeCount(Long id) {
+        Board board = findOne(id);
+        board.setLikeCount(board.getLikeCount() + 1);
+    }
+
 }

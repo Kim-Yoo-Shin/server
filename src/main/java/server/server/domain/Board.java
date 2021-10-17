@@ -31,12 +31,12 @@ public class Board {
     @Size(max = 20, min = 2)
     private String title;
     @NotNull
-    @Max(value = 2000L)
+//    @Max(value = 2000)
     private String content;
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 

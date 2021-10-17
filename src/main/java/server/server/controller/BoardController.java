@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.server.domain.Board;
 import server.server.domain.Category;
@@ -28,13 +29,11 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/api/boards")
+@RequestMapping("/api/board")
 @RequiredArgsConstructor
 public class BoardController {
 
 
-    @Autowired
-    private final BoardService boardService;
     @Autowired
     private final BoardRepository boardRepository;
     @Autowired
@@ -45,8 +44,14 @@ public class BoardController {
     @PostMapping("/save")
     public void saveBoard(HttpServletRequest request, @RequestBody BoardSaveRequestDto bsrd) {
         // 토큰을 받지 않고는 save 테스트 할 수 없다.
-
-        Member member = memberService.getCurrentUserInfo(request).get();
+        // board member cascade 생각해보기.
+//        Member member = memberService.getCurrentUserInfo(request).get();
+        Member member = new Member();
+        member.setName("aaa");
+        member.setPassword("aaa");
+        member.setDatetime(LocalDateTime.now());
+        member.setUserId("aaa");
+        memberService.join(member);
         Board board = BoardSaveRequestDto.changeToBoard(bsrd, member);
         boardRepository.save(board);
     }
@@ -57,7 +62,6 @@ public class BoardController {
         @Size(max = 20, min = 2)
         private String title;
         @NotNull
-        @Max(value = 2000L)
         private String content;
         @NotNull
         @Size(max = 10, min = 6)
@@ -77,9 +81,8 @@ public class BoardController {
 
 
     @PostMapping("/count/{boardId}")
-    public BoardDto plusBoard(@PathVariable Long boardId) {
-        boardService.plusLikeCount(boardId);
-        return boardService.findOne(boardId);
+    public void plusLikeCount(@PathVariable Long boardId) {
+        boardRepository.plusLikeCount(boardId);
 
     }
 
