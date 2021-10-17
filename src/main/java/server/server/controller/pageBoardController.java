@@ -37,9 +37,9 @@ public class pageBoardController {
                                @RequestParam(name = "perboard", defaultValue = "10") int perBoard,
                                @RequestParam(name = "sort_index", defaultValue = "NORMAL") SortMethod sortMethod) {
         int totalPage = boardRepository.findPage(category, perBoard);
-        List<BoardDataDto> boardDataDtoList = boardRepository.findBoard(category, nowPage, perBoard,sortMethod)
+        List<BoardListDto> boardDataDtoList = boardRepository.findBoardList(category, nowPage, perBoard,sortMethod)
                 .stream()
-                .map(board -> new BoardDataDto(board.getId(), board.getTitle(), board.getContent(), board.getMember().getName(), board.getDateTime(), board.getLikeCount()))
+                .map(board -> new BoardListDto(board.getId(), board.getTitle(), board.getContent(), board.getMember().getName(), board.getDateTime(), board.getLikeCount()))
                 .collect(Collectors.toList());
 
         return new Result(boardDataDtoList, new BoardPageDto(totalPage, nowPage, perBoard));
@@ -62,7 +62,7 @@ public class pageBoardController {
     }
     @Data
     @AllArgsConstructor
-    static class BoardDataDto {
+    static class BoardListDto {
         private Long boardId;
         private String title;
         private String content;

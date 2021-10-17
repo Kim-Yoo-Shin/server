@@ -79,6 +79,11 @@ public class BoardController {
         }
     }
 
+    @GetMapping("/{boardId}")
+    public BoardResponseDto findBoard(@PathVariable Long boardId) {
+        Board board = boardRepository.findBoard(boardId);
+        return new BoardResponseDto(board.getId(), board.getTitle(), board.getMember().getName(), board.getContent(), board.getLikeCount());
+    }
 
     @PostMapping("/count/{boardId}")
     public void plusLikeCount(@PathVariable Long boardId) {
@@ -86,6 +91,16 @@ public class BoardController {
 
     }
 
+    @Data
+    @AllArgsConstructor
+    static class BoardResponseDto{
+        private Long boardId;
+        private String title;
+        private String memberName;
+        private String content;
+        private int likecount;
+
+    }
 
 
 }

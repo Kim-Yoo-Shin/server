@@ -43,7 +43,7 @@ public class BoardRepository {
         return (boardNum / perBoard) + 1;
     }
 
-    public List<Board> findBoard(Category category, int nowPage, int perBoard, SortMethod sortMethod) {
+    public List<Board> findBoardList(Category category, int nowPage, int perBoard, SortMethod sortMethod) {
         String query = "select b " +
                 "from Board b join fetch b.member m " +
                 "where b.category = :category " +
@@ -71,4 +71,9 @@ public class BoardRepository {
         board.setLikeCount(board.getLikeCount() + 1);
     }
 
+    public Board findBoard(Long boardId) {
+        return em.createQuery("select b " +
+                "from Board b join fetch b.member",Board.class)
+                .getSingleResult();
+    }
 }
